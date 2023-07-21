@@ -1,19 +1,19 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { loginStore,registerStore } from '../../store/login';
+	import { loginStore, registerStore } from '../../store/login';
 	import Modal from './Modal.svelte';
 	let searchTerm = '';
 	$: isModalOpen = false;
 	let email = '';
 	$: isLogedIn = email;
+	$: onClickProfile = '';
 	loginStore.subscribe((value) => {
 		console.log(value);
 		email = value.email;
-		isLogedIn = value.login;
+		isLogedIn = value.email;
 	});
 	loginStore.subscribe((value) => {
 		console.log(value);
-		
 	});
 	function handleFormSubmit(event) {
 		event.preventDefault();
@@ -26,6 +26,9 @@
 		if (event.key === 'Enter') {
 			handleFormSubmit(event);
 		}
+	}
+	function handleProfileClick() {
+		isModalOpen = true;
 	}
 </script>
 
@@ -45,18 +48,17 @@
 		<a href="/login">Login</a>
 		<a href="/register">Register</a>
 		{#if isLogedIn}
-			<button on:click={() => {isModalOpen = true;console.log(isModalOpen)}}>Profile</button>
+			<button on:click={handleProfileClick}>Profile</button>
 		{/if}
 
 		<!-- svelte-ignore a11y-missing-content -->
 	</div>
-	{#if isModalOpen ||isLogedIn }
-	<Modal isOpen={isModalOpen}>
-		<h2 slot="header">Hello {email}</h2>
-		<p slot="content">Welcome to Movie App</p>
-	</Modal>
+	{#if isModalOpen}
+		<Modal bind:isOpen={isModalOpen}>
+			<h2 slot="header">Hello {email}</h2>
+			<p slot="content">Welcome to Movie App</p>
+		</Modal>
 	{/if}
-	
 </nav>
 
 <style>
@@ -99,5 +101,4 @@
 		color: #fff;
 		cursor: pointer;
 	}
-	
 </style>
