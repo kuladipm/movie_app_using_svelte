@@ -13,6 +13,7 @@
 				registerStore.update((item) => {
 					return [...item, { email: email, password: password, name: password }];
 				});
+				loginStore.set({ email: email, password: password, name: password })
 				goto('/');
 			} else {
 				alert('you already registered please login');
